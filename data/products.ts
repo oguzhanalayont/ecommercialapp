@@ -73,7 +73,7 @@ export const products: Product[] = [
     price: 39.99,
     image: 'https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Kaydırmaz Terletmez Yoga Matı',
-    category: 'Spor & Outdoor',
+    category: 'Spor',
     rating: 4.5,
     reviews: 118,
     inStock: true,
@@ -95,7 +95,7 @@ export const categories = [
   { id: '1', name: 'Elektronik', icon: '💻', color: '#3B82F6' },
   { id: '2', name: 'Giyim', icon: '🧥', color: '#10B981' },
   { id: '3', name: 'Ev & Bahçe', icon: '🏡', color: '#F59E0B' },
-  { id: '4', name: 'Spor & Outdoor', icon: '🎾', color: '#EF4444' },
+  { id: '4', name: 'Spor', icon: '🎾', color: '#EF4444' },
   { id: '5', name: 'Gıda', icon: '🍞', color: '#8B5CF6' },
   { id: '6', name: 'Aksesuar', icon: '👜', color: '#EC4899' },
 ];

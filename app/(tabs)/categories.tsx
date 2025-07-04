@@ -105,7 +105,7 @@ export default function CategoriesScreen() {
             data={categories}
             renderItem={renderCategory}
             keyExtractor={(item) => item.id}
-            numColumns={2}
+            numColumns={3}
             scrollEnabled={false}
             contentContainerStyle={styles.categoriesGrid}
             columnWrapperStyle={styles.categoryRow}
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   categoryCard: {
-    width: (width - 90) / 2,       
+    width: (width - 56) / 3,       
     aspectRatio: 1.1,              
     borderRadius: 12,              
     padding: 16,                   
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   categoryName: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Inter-SemiBold',
     textAlign: 'center',
   },

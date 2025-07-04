@@ -55,7 +55,7 @@ const resources = {
       category_1: "Elektronik",
       category_2: "Giyim",
       category_3: "Ev & Bahçe",
-      category_4: "Spor & Outdoor",
+      category_4: "Spor",
       category_5: "Gıda",
       category_6: "Aksesuar",
 
@@ -117,7 +117,7 @@ const resources = {
       category_1: "Electronics",
       category_2: "Clothing",
       category_3: "Home & Garden",
-      category_4: "Sports & Outdoors",
+      category_4: "Sports",
       category_5: "Food",
       category_6: "Accessories",
 
