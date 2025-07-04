@@ -3,11 +3,11 @@ import { Tabs } from 'expo-router';
 import { Home, List, ShoppingCart, User } from 'lucide-react-native';
 import { useCart } from '@/context/CartContext';
 import { View, Text, StyleSheet } from 'react-native';
-import { useTranslation } from 'react-i18next'; // 🔁 i18n eklendi
+import { useTranslation } from 'react-i18next';
 
 export default function TabLayout() {
   const { itemCount } = useCart();
-  const { t } = useTranslation(); // 🔁 çeviri fonksiyonu
+  const { t } = useTranslation();
 
   return (
     <Tabs

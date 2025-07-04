@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   productCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
-    width: PRODUCT_WIDTH, // Dışarıda tanımlı olmalı
+    width: PRODUCT_WIDTH,
     marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

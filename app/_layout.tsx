@@ -13,6 +13,7 @@ import {
 import * as SplashScreen from 'expo-splash-screen';
 import { CartProvider } from '@/context/CartContext';
 import { AuthProvider } from '@/context/AuthContext';
+import Background from '@/components/Background';
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -29,7 +30,9 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync();
+      setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 500);
     }
   }, [fontsLoaded, fontError]);
 
@@ -40,18 +43,24 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <CartProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="product/[id]" options={{ presentation: 'modal' }} />
-          <Stack.Screen name="search" options={{ presentation: 'modal' }} />
-          <Stack.Screen name="checkout" options={{ presentation: 'modal' }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+        <Background>
+          <Stack
+            screenOptions={{ 
+              headerShown: false,
+              animation: 'fade'
+            }}
+          >
+            {/* index.tsx otomatik olarak ilk sayfa olacak */}
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="product/[id]" options={{ presentation: 'modal' }} />
+            <Stack.Screen name="search" options={{ presentation: 'modal' }} />
+            <Stack.Screen name="checkout" options={{ presentation: 'modal' }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </Background>
         <StatusBar style="auto" />
       </CartProvider>
     </AuthProvider>
-
-);
-
-
+  );
 }

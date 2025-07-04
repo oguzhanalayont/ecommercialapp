@@ -36,7 +36,7 @@ export const products: Product[] = [
   },
   {
     id: '4',
-    name: 'Kavrulmuş Çekirdek Kahve',
+    name: 'Çekirdek Kahve',
     price: 24.99,
     image: 'https://images.pexels.com/photos/894695/pexels-photo-894695.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Etiyopya Kahve Çekirdeği',
