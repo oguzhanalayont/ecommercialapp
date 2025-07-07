@@ -68,7 +68,7 @@ export default function ProfileScreen() {
 
   if (!isAuthenticated) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['top']} style={styles.container}>
         <View style={styles.authContainer}>
           <Text style={styles.authTitle}>
             {isLogin ? t('welcome') : t('create_account')}
@@ -151,7 +151,7 @@ export default function ProfileScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top']} style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   languageText: {
     marginHorizontal: 6,
     fontSize: 14,
-    color: '#2563EB',
+    color: '#0077b6',
     fontFamily: 'Inter-Medium',
   },
 
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   authButton: {
-    backgroundColor: '#2563EB',
+    backgroundColor: '#2a93d5',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   switchButtonText: {
     fontSize: 14,
     fontFamily: 'Inter-Medium',
-    color: '#2563EB',
+    color: '#0077b6',
   },
   header: {
     padding: 20,
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontFamily: 'Inter-Bold',
-    color: '#2563EB',
+    color: '#2a93d5',
   },
   statLabel: {
     fontSize: 14,

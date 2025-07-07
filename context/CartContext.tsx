@@ -10,6 +10,7 @@ export interface Product {
   rating: number;
   reviews: number;
   inStock: boolean;
+  flashSale?: boolean;
 }
 
 export interface CartItem extends Product {

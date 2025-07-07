@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Star, ShoppingCart } from 'lucide-react-native';
+import { Star, ShoppingCart, Heart } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { categories, products } from '@/data/products';
@@ -22,14 +22,22 @@ const PRODUCT_WIDTH = (width - 48) / 2;
 export default function CategoriesScreen() {
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [wishlist, setWishlist] = useState<string[]>([]);
   const router = useRouter();
   const { addToCart } = useCart();
+
+  const toggleWishlist = (productId: string) => {
+    setWishlist(prev =>
+      prev.includes(productId)
+        ? prev.filter(id => id !== productId)
+        : [...prev, productId]
+    );
+  };
 
   const filteredProducts = selectedCategory
     ? products.filter(product => product.category === selectedCategory)
     : products;
 
-  // Helper function to safely get translation with fallback
   const getTranslation = (key: string, fallback: string = '') => {
     const translation = t(key);
     return translation || fallback;
@@ -56,7 +64,29 @@ export default function CategoriesScreen() {
       style={styles.productCard}
       onPress={() => router.push(`/product/${item.id}`)}
     >
-      <Image source={{ uri: item.image }} style={styles.productImage} />
+      <View style={styles.productImageContainer}>
+        <Image source={{ uri: item.image }} style={styles.productImage} />
+
+        {/* Flash Sale etiketi */}
+        {item.flashSale && (
+          <View style={styles.flashSaleBadge}>
+            <Text style={styles.flashSaleText}>{t('flash_sale')}</Text>
+          </View>
+        )}
+
+        {/* Wishlist button */}
+        <TouchableOpacity
+          style={styles.wishlistButton}
+          onPress={() => toggleWishlist(item.id)}
+        >
+          <Heart
+            size={18}
+            color={wishlist.includes(item.id) ? '#2a93d5' : '#9CA3AF'}
+            fill={wishlist.includes(item.id) ? '#2a93d5' : 'none'}
+          />
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.productInfo}>
         <Text style={styles.productName} numberOfLines={2}>
           {getTranslation(`product_${item.id}`, item.name || 'Product')}
@@ -79,7 +109,6 @@ export default function CategoriesScreen() {
     </TouchableOpacity>
   );
 
-  // Get section title safely
   const getSectionTitle = () => {
     if (selectedCategory) {
       const category = categories.find(c => c.name === selectedCategory);
@@ -93,7 +122,7 @@ export default function CategoriesScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top']} style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>{getTranslation('categories_title', 'Categories')}</Text>
@@ -131,11 +160,16 @@ export default function CategoriesScreen() {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F9FAFB',
   },
+  productImageContainer: {
+  position: 'relative',
+},
+
   header: {
     padding: 20,
     paddingTop: 10,
@@ -160,8 +194,22 @@ const styles = StyleSheet.create({
   categoryRow: {
     justifyContent: 'space-between',
   },
+  wishlistButton: {
+  position: 'absolute',
+  top: 8,
+  right: 8,
+  zIndex: 2,
+  backgroundColor: 'rgba(255, 255, 255, 0.69)', // yarı saydam beyaz
+    borderRadius: 20,
+    padding: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+},
   categoryCard: {
-    width: (width - 56) / 3,       
+    width: (width - 65) / 3,       
     aspectRatio: 1.1,              
     borderRadius: 12,              
     padding: 16,                   
@@ -176,7 +224,7 @@ const styles = StyleSheet.create({
   },
   selectedCategory: {
     borderWidth: 2,
-    borderColor: '#2563EB',
+    borderColor: '#2a93d5',
   },
   categoryIcon: {
     fontSize: 40,
@@ -187,6 +235,22 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-SemiBold',
     textAlign: 'center',
   },
+  flashSaleBadge: {
+  position: 'absolute',
+  top: 8,
+  left: 8,
+  backgroundColor: '#2a93d5',
+  paddingHorizontal: 6,
+  paddingVertical: 2,
+  borderRadius: 4,
+  zIndex: 2,
+},
+flashSaleText: {
+  color: '#fff',
+  fontSize: 10,
+  fontWeight: 'bold',
+},
+
   section: {
     marginBottom: 24,
   },
@@ -255,10 +319,10 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     fontFamily: 'Inter-Bold',
-    color: '#2563EB',
+    color: '#0077b6',
   },
   addToCartButton: {
-      backgroundColor: '#2563EB',
+      backgroundColor: '#2a93d5',
       borderRadius: 24,
       paddingVertical: 10,
       paddingHorizontal: 16,

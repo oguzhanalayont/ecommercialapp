@@ -30,16 +30,22 @@ export default function CartScreen() {
       }
     }
   };
+  const getTranslation = (key: string, fallback: string = '') => {
+  const translation = t(key);
+  return translation || fallback;
+};
+
 
   const handleClearCart = () => {
     Alert.alert(
-      t('cart.clear_title'),
-      t('cart.clear_confirm'),
-      [
-        { text: t('cart.cancel'), style: 'cancel' },
-        { text: t('cart.clear'), style: 'destructive', onPress: clearCart },
-      ]
-    );
+  t('clear_title'),
+  t('clear_confirm'),
+  [
+    { text: t('cancel'), style: 'cancel' },
+    { text: t('clear'), style: 'destructive', onPress: clearCart },
+  ]
+);
+
   };
 
   const handleCheckout = () => {
@@ -48,7 +54,7 @@ export default function CartScreen() {
 
   if (state.items.length === 0) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['top']} style={styles.container}>
         <View style={styles.emptyContainer}>
           <ShoppingBag size={80} color="#9CA3AF" />
           <Text style={styles.emptyTitle}>{t('empty_title')}</Text>
@@ -65,7 +71,7 @@ export default function CartScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top']} style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{t('title')}</Text>
         <TouchableOpacity onPress={handleClearCart}>
@@ -78,21 +84,23 @@ export default function CartScreen() {
           <View key={item.id} style={styles.cartItem}>
             <Image source={{ uri: item.image }} style={styles.itemImage} />
             <View style={styles.itemDetails}>
-              <Text style={styles.itemName} numberOfLines={2}>{item.name}</Text>
+              <Text style={styles.itemName} numberOfLines={2}>
+  {getTranslation(`product_${item.id}`, item.name)}
+</Text>
               <Text style={styles.itemPrice}>₺{item.price}</Text>
               <View style={styles.quantityContainer}>
                 <TouchableOpacity
                   style={styles.quantityButton}
                   onPress={() => handleQuantityChange(item.id, -1)}
                 >
-                  <Minus size={16} color="#6B7280" />
+                  <Minus size={14} color="#2a93d5" />
                 </TouchableOpacity>
                 <Text style={styles.quantity}>{item.quantity}</Text>
                 <TouchableOpacity
                   style={styles.quantityButton}
                   onPress={() => handleQuantityChange(item.id, 1)}
                 >
-                  <Plus size={16} color="#6B7280" />
+                  <Plus size={14} color="#2a93d5" />
                 </TouchableOpacity>
               </View>
             </View>
@@ -208,7 +216,7 @@ const styles = StyleSheet.create({
   itemTotal: {
     fontSize: 18,
     fontFamily: 'Inter-Bold',
-    color: '#2563EB',
+    color: '#0077b6',
   },
   footer: {
     backgroundColor: '#FFFFFF',
@@ -230,10 +238,10 @@ const styles = StyleSheet.create({
   totalAmount: {
     fontSize: 24,
     fontFamily: 'Inter-Bold',
-    color: '#2563EB',
+    color: '#0077b6',
   },
   checkoutButton: {
-    backgroundColor: '#2563EB',
+    backgroundColor: '#2a93d5',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
@@ -264,7 +272,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   shopButton: {
-    backgroundColor: '#2563EB',
+    backgroundColor: '#0077b6',
     borderRadius: 12,
     paddingHorizontal: 24,
     paddingVertical: 12,

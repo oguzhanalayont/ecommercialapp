@@ -55,7 +55,7 @@ export default function SearchScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top']} style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
@@ -215,10 +215,10 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     fontFamily: 'Inter-Bold',
-    color: '#2563EB',
+    color: '#0077b6',
   },
   addToCartButton: {
-      backgroundColor: '#2563EB',
+      backgroundColor: '#2a93d5',
       borderRadius: 24,
       paddingVertical: 10,
       paddingHorizontal: 16,

@@ -7,10 +7,11 @@ export const products: Product[] = [
     price: 79.99,
     image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Apple Marka Bluetooth Kulaklık',
-    category: 'Elektonik',
+    category: 'Elektronik',
     rating: 4.5,
     reviews: 128,
     inStock: true,
+    flashSale: true,
   },
   {
     id: '2',
@@ -22,6 +23,7 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 89,
     inStock: true,
+    flashSale: false,
   },
   {
     id: '3',
@@ -33,6 +35,7 @@ export const products: Product[] = [
     rating: 4.3,
     reviews: 67,
     inStock: true,
+    flashSale: false,
   },
   {
     id: '4',
@@ -44,6 +47,7 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 156,
     inStock: true,
+    flashSale: false,
   },
   {
     id: '5',
@@ -55,6 +59,7 @@ export const products: Product[] = [
     rating: 4.4,
     reviews: 92,
     inStock: true,
+    flashSale: false,
   },
   {
     id: '6',
@@ -65,7 +70,8 @@ export const products: Product[] = [
     category: 'Aksesuar',
     rating: 4.6,
     reviews: 74,
-    inStock: true,
+    inStock: false,
+    flashSale: true,
   },
   {
     id: '7',
@@ -77,6 +83,7 @@ export const products: Product[] = [
     rating: 4.5,
     reviews: 118,
     inStock: true,
+    flashSale: true,
   },
   {
     id: '8',
@@ -88,14 +95,15 @@ export const products: Product[] = [
     rating: 4.2,
     reviews: 43,
     inStock: true,
+    flashSale: false,
   },
 ];
 
 export const categories = [
-  { id: '1', name: 'Elektronik', icon: '💻', color: '#3B82F6' },
-  { id: '2', name: 'Giyim', icon: '🧥', color: '#10B981' },
-  { id: '3', name: 'Ev & Bahçe', icon: '🏡', color: '#F59E0B' },
-  { id: '4', name: 'Spor', icon: '🎾', color: '#EF4444' },
-  { id: '5', name: 'Gıda', icon: '🍞', color: '#8B5CF6' },
-  { id: '6', name: 'Aksesuar', icon: '👜', color: '#EC4899' },
+  { id: '1', name: 'Elektronik', icon: '💻', color: '#1f62d0' },
+  { id: '2', name: 'Giyim', icon: '🧥', color: '#1f62d0' },
+  { id: '3', name: 'Ev & Bahçe', icon: '🏡', color: '#1f62d0' },
+  { id: '4', name: 'Spor', icon: '🎾', color: '#1f62d0' },
+  { id: '5', name: 'Gıda', icon: '🍞', color: '#1f62d0' },
+  { id: '6', name: 'Aksesuar', icon: '👜', color: '#1f62d0' },
 ];

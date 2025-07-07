@@ -63,6 +63,8 @@ const resources = {
       tab_categories: "Kategoriler",
       tab_cart: "Sepetim",
       tab_profile: "Profil",
+      flash_sale: "Flaş İndirim"
+
     },
   },
   en: {
@@ -74,6 +76,7 @@ const resources = {
       name: 'Name',
       email: 'Email',
       password: 'Password',
+      flash_sale: "Flash Sale",
       login: 'Login',
       register: 'Register',
       'You Dont Have Account': "Don't have an account? Sign up",

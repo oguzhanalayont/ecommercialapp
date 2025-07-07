@@ -50,7 +50,6 @@ export default function RootLayout() {
               animation: 'fade'
             }}
           >
-            {/* index.tsx otomatik olarak ilk sayfa olacak */}
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="product/[id]" options={{ presentation: 'modal' }} />

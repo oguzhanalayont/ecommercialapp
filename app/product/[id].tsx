@@ -27,7 +27,7 @@ export default function ProductDetailScreen() {
 
   if (!product) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['top']} style={styles.container}>
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>Product not found</Text>
         </View>
@@ -43,7 +43,7 @@ export default function ProductDetailScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top']} style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
@@ -56,8 +56,8 @@ export default function ProductDetailScreen() {
           >
             <Heart 
               size={24} 
-              color={isWishlisted ? '#DC2626' : '#111827'} 
-              fill={isWishlisted ? '#DC2626' : 'none'}
+              color={isWishlisted ? '#2a93d5' : '#111827'} 
+              fill={isWishlisted ? '#2a93d5' : 'none'}
             />
           </TouchableOpacity>
         </View>
@@ -98,14 +98,14 @@ export default function ProductDetailScreen() {
                 style={styles.quantityButton}
                 onPress={() => setQuantity(Math.max(1, quantity - 1))}
               >
-                <Minus size={20} color="#6B7280" />
+                <Minus size={20} color="#2a93d5" />
               </TouchableOpacity>
               <Text style={styles.quantityText}>{quantity}</Text>
               <TouchableOpacity
                 style={styles.quantityButton}
                 onPress={() => setQuantity(quantity + 1)}
               >
-                <Plus size={20} color="#6B7280" />
+                <Plus size={20} color="#2a93d5" />
               </TouchableOpacity>
             </View>
           </View>
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   category: {
     fontSize: 14,
     fontFamily: 'Inter-Medium',
-    color: '#2563EB',
+    color: '#0077b6',
     backgroundColor: '#EBF4FF',
     paddingHorizontal: 12,
     paddingVertical: 4,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 28,
     fontFamily: 'Inter-Bold',
-    color: '#2563EB',
+    color: '#0077b6',
     marginBottom: 16,
   },
   stockContainer: {
@@ -288,10 +288,10 @@ const styles = StyleSheet.create({
   totalAmount: {
     fontSize: 20,
     fontFamily: 'Inter-Bold',
-    color: '#2563EB',
+    color: '#0077b6',
   },
   addToCartButton: {
-    backgroundColor: '#2563EB',
+    backgroundColor: '#2a93d5',
     borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',

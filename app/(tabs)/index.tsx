@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
   ScrollView,
-  TextInput,
   TouchableOpacity,
   Image,
   FlatList,
   Dimensions,
-  StyleSheet, 
+  StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Search, Star, Heart, ShoppingCart } from 'lucide-react-native';
@@ -17,6 +16,8 @@ import { products } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { Vibration } from 'react-native';
+
 
 const { width } = Dimensions.get('window');
 const PRODUCT_WIDTH = (width - 48) / 2;
@@ -29,7 +30,6 @@ export default function HomeScreen() {
   const { user } = useAuth();
   const { t } = useTranslation();
 
-  // Helper function to safely get translation with fallback
   const getTranslation = (key: string, fallback: string = '') => {
     const translation = t(key);
     return translation || fallback;
@@ -41,6 +41,25 @@ export default function HomeScreen() {
 
   const featuredProducts = products.slice(0, 4);
 
+  const campaigns = [
+    require('@/assets/campaign1.png'),
+    require('@/assets/campaign2.png'),
+    require('@/assets/campaign3.png'),
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextIndex = (currentIndex + 1) % campaigns.length;
+      setCurrentIndex(nextIndex);
+      flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
   const toggleWishlist = (productId: string) => {
     setWishlist(prev =>
       prev.includes(productId)
@@ -51,6 +70,7 @@ export default function HomeScreen() {
 
   const handleAddToCart = (product: any) => {
     addToCart(product);
+    Vibration.vibrate(20); // 40ms titreşim
   };
 
   const renderProduct = ({ item }: { item: any }) => (
@@ -60,14 +80,21 @@ export default function HomeScreen() {
     >
       <View style={styles.productImageContainer}>
         <Image source={{ uri: item.image }} style={styles.productImage} />
+
+          {/* Flash Sale etiketi */}
+  {item.flashSale && (
+    <View style={styles.flashSaleBadge}>
+      <Text style={styles.flashSaleText}>{t('flash_sale')}</Text>
+    </View>
+  )}
         <TouchableOpacity
           style={styles.wishlistButton}
           onPress={() => toggleWishlist(item.id)}
         >
           <Heart
             size={18}
-            color={wishlist.includes(item.id) ? '#DC2626' : '#9CA3AF'}
-            fill={wishlist.includes(item.id) ? '#DC2626' : 'none'}
+            color={wishlist.includes(item.id) ? '#2a93d5' : '#9CA3AF'}
+            fill={wishlist.includes(item.id) ? '#2a93d5' : 'none'}
           />
         </TouchableOpacity>
       </View>
@@ -93,62 +120,96 @@ export default function HomeScreen() {
     </TouchableOpacity>
   );
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View style={styles.headerContainer}>
-          {/* Üst satır: Logo + Arama butonu */}
-          <View style={styles.topRow}>
-            <Image source={require('@/assets/logo.png')} style={styles.logo} />
-            <TouchableOpacity onPress={() => router.push({ pathname: '/search' })}>
-              <Search size={24} color="#111827" />
-            </TouchableOpacity>
-          </View>
 
-          {/* Alt satır: Başlık */}
-<View style={styles.bottomRow}>
-  <Text style={styles.subtitle}>
-    {t('home_subtitle')}
-  </Text>
+  return (
+    <SafeAreaView edges={['top']} style={styles.container}>
+      {/* Sabit Header */}
+      <View style={styles.headerContainer}>
+        <View style={styles.topRow}>
+          <Image source={require('@/assets/logo.png')} style={styles.logo} />
+          <TouchableOpacity onPress={() => router.push({ pathname: '/search' })}>
+            <Search size={24} color="#111827" />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Scrollable Content */}
+      <ScrollView
+  showsVerticalScrollIndicator={false}
+  contentContainerStyle={{
+    paddingTop: 48,
+    paddingBottom: 0,
+  }}
+      >
+        {/* Kampanya Slider */}
+        <View style={{ marginBottom: 8 }}>
+  <FlatList
+    ref={flatListRef}
+    data={campaigns}
+    horizontal
+    pagingEnabled
+    showsHorizontalScrollIndicator={false}
+    keyExtractor={(_, index) => index.toString()}
+    renderItem={({ item }) => (
+      <Image
+        source={item}
+        style={styles.campaignImage}
+      />
+    )}
+    onMomentumScrollEnd={(event) => {
+      const index = Math.round(
+        event.nativeEvent.contentOffset.x / width
+      );
+      setCurrentIndex(index);
+    }}
+  />
 </View>
 
-        </View>
+{/* Featured Products */}
+<View style={styles.section}>
+  <Text style={styles.sectionTitle}>
+    {getTranslation('featured_products', 'Featured Products')}
+  </Text>
+  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+    <View style={styles.featuredContainer}>
+      {featuredProducts.map((product) => (
+        <TouchableOpacity
+          key={product.id}
+          style={styles.featuredCard}
+          onPress={() =>
+            router.push({
+              pathname: '/product/[id]',
+              params: { id: product.id },
+            })
+          }
+        >
+          <View style={{ position: 'relative' }}>
+            <Image
+              source={{ uri: product.image }}
+              style={styles.featuredImage}
+            />
 
-        {/* Featured Products */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            {getTranslation('featured_products', 'Featured Products')}
-          </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.featuredContainer}>
-              {featuredProducts.map((product) => (
-                <TouchableOpacity
-                  key={product.id}
-                  style={styles.featuredCard}
-                  onPress={() =>
-                    router.push({
-                      pathname: '/product/[id]',
-                      params: { id: product.id },
-                    })
-                  }
-                >
-                  <Image
-                    source={{ uri: product.image }}
-                    style={styles.featuredImage}
-                  />
-                  <View style={styles.featuredInfo}>
-                    <Text style={styles.featuredName} numberOfLines={1}>
-                      {getTranslation(`product_${product.id}`, product.name || 'Product')}
-                    </Text>
-                    <Text style={styles.featuredPrice}>₺{product.price || '0'}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
+            {/* Flash Sale etiketi */}
+            {product.flashSale && (
+              <View style={styles.flashSaleBadge}>
+                <Text style={styles.flashSaleText}>
+                  {getTranslation('flash_sale', 'Flaş İndirim')}
+                </Text>
+              </View>
+            )}
+          </View>
 
+          <View style={styles.featuredInfo}>
+            <Text style={styles.featuredName} numberOfLines={1}>
+              {getTranslation(`product_${product.id}`, product.name || 'Product')}
+            </Text>
+            <Text style={styles.featuredPrice}>₺{product.price || '0'}</Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </View>
+  </ScrollView>
+</View>
         {/* All Products */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
@@ -160,7 +221,10 @@ export default function HomeScreen() {
             keyExtractor={(item) => item.id}
             numColumns={2}
             scrollEnabled={false}
-            contentContainerStyle={styles.productsGrid}
+            contentContainerStyle={[
+    styles.productsGrid,
+    { paddingBottom: 0, marginBottom: 0 }
+  ]}
             columnWrapperStyle={styles.productRow}
           />
         </View>
@@ -181,11 +245,32 @@ const styles = StyleSheet.create({
   },
 
   headerContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 16,
-    backgroundColor: '#F9FAFB',
-  },
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 10,
+  paddingHorizontal: 20,
+  paddingTop: 24,
+  paddingBottom: 0,
+  backgroundColor: '#F9FAFB',
+  elevation: 1, // Android gölgesi
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+},
+
+campaignImage: {
+  width: width - 20,
+  height: 150,
+  resizeMode: 'cover',
+  borderRadius: 12,
+  marginHorizontal: 10,
+},
+
+
+
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -197,6 +282,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12,
   },
+  flashSaleBadge: {
+  position: 'absolute',
+  top: 8,
+  left: 8,
+  backgroundColor: '#2a93d5',
+  paddingHorizontal: 6,
+  paddingVertical: 2,
+  borderRadius: 4,
+  zIndex: 2,
+},
+flashSaleText: {
+  color: '#fff',
+  fontSize: 10,
+  fontWeight: 'bold',
+},
+
   headerText: {
     fontSize: 16,
     fontFamily: 'Inter-Medium',
@@ -294,10 +395,12 @@ const styles = StyleSheet.create({
   featuredPrice: {
     fontSize: 16,
     fontFamily: 'Inter-Bold',
-    color: '#2563EB',
+    color: '#0077b6',
   },
   productsGrid: {
     paddingHorizontal: 20,
+      paddingBottom: 0,
+      marginBottom: 0,
   },
   productRow: {
     justifyContent: 'space-between',
@@ -326,7 +429,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'srgba(255, 255, 255, 0.69)',
     borderRadius: 20,
     padding: 6,
     shadowColor: '#000',
@@ -370,10 +473,10 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     fontFamily: 'Inter-Bold',
-    color: '#2563EB',
+    color: '#0077b6',
   },
   addToCartButton: {
-    backgroundColor: '#2563EB',
+    backgroundColor: '#2a93d5',
     borderRadius: 24,
     paddingVertical: 10,
     paddingHorizontal: 16,
